@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "TopTal Time Manager";
+}
+
+@using (Html.BeginForm())
+{
+    <div>
+        <input type="hidden" id="CurrentUserID" name="CurrentUserID" value='@HttpContext.Current.User.Identity.Name' />
+        <input type="hidden" id="IsManager" name="IsManager" value='@Convert.ToInt32(HttpContext.Current.User.IsInRole("MANAGER"))' />
+        <input type="hidden" id="IsAdmin" name="IsAdmin" value='@Convert.ToInt32(HttpContext.Current.User.IsInRole("ADMIN"))' />
+        <input type="hidden" id="TaskRecordID" name="TaskRecordID" />
+        <input type="hidden" id="DailyHoursOtherTasks" name="DailyHoursOtherTasks" />
+        <input type="hidden" id="TaskHoursOriginal" name="TaskHoursOriginal" />
+
+        <div id="WeclomeHeading" class="SectionHeading"></div>
+
+        <div id="ManagerOptions" style="display:none;">
+            <div class="InputForm">
+                <ul class="FormFields">
+                    <li>
+                        <label style="width:150px;">Select Another User:</label>
+                        <select id="SelectedUserID"></select>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="EditUserForm" class="InputForm">
+                <ul class="FormFields">
+                    <li>
+                        <label style="width:80px;">UserName:</label>
+                        <input id="EditUserName" name="EditUserName" type="text" />
+                        <label style="width:auto; margin-left:10px;">Is Active:</label>
+                        <input id="EditIsActive" name="EditIsActive" type="checkbox" />
+                        <label style="width:auto; margin-left:10px;">Is Manager:</label>
+                        <input id="EditIsManager" name="EditIsManager" type="checkbox" />
+                        <label style="width:auto; margin-left:10px;">Is Admin:</label>
+                        <input id="EditIsAdmin" name="EditIsAdmin" type="checkbox" />
+                        <input id="btnDeleteUser" type="button" value="Delete User" class="WarningButton" style="margin-left:20px; display:none;" />
+                    </li>
+                </ul>
+            </div>
+
+            <div id="SelectedUserName" class="SectionHeading"></div>
+
+        </div>
+
+        <div id="TaskForm">
+
+            <div class="InputForm">
+                <ul class="FormFields">
+                    <li>
+                        <label style="width:270px;">Preferred working hours per day:</label>
+                        <input id="DailyHours" name="DailyHours" type="text" />
+                    </li>
+                </ul>
+            </div>
+
+            <div class="SectionHeading">Task Form</div>
+            <div class="InputForm">
+                <ul class="FormFields">
+                    <li>
+                        <label>Notes:</label>
+                        <input id="TaskNotes" name="TaskNote" type="text" style="width:450px; max-width:100%;">
+                    </li>
+                    <li>
+                        <label>Date:</label>
+                        <input id="TaskDate" name="TaskDate" type="text" placeholder="MM/DD/YYYY">
+                    </li>
+                    <li>
+                        <label>Hours:</label>
+                        <input id="TaskHours" name="TaskHours" type="text" />
+                    </li>
+                    <li>
+                        <label></label>
+                        <input id="btnAddTask" type="button" value="Add Task" style="width:80px;" />
+                        <input id="btnCancelTask" type="button" value="Cancel" style="margin-left:20px;" />
+                        <input id="btnDeleteTask" type="button" value="Delete" style="margin-left:20px; display:none;" />
+                    </li>
+                </ul>
+            </div>
+
+            <div class="SectionHeading">Task List</div>
+            <div class="InputForm">
+                <ul class="FormFields">
+                    <li>
+                        <label style="width:90px;">Start Date:</label>
+                        <input id="FilterStartDate" name="FilterStartDate" type="text" placeholder="MM/DD/YYYY" />
+                        <label style="width:90px; margin-left:20px;">End Date:</label>
+                        <input id="FilterEndDate" name="FilterEndDate" type="text" placeholder="MM/DD/YYYY" />
+                    </li>
+                    <li>
+                        <label style="width:90px;"></label>
+                        <input id="btnFilterTasks" type="button" value="Search Tasks" />
+                        <input id="btnPrintTasks" type="button" value="Print Tasks" style="margin-left:20px;" />
+                    </li>
+                </ul>
+            </div>
+
+            <table class="TaskSearch">
+                <thead>
+                    <tr>
+                        <th>Notes</th>
+                        <th>Date</th>
+                        <th>Hours</th>
+                    </tr>
+                </thead>
+                <tbody id="searchResults"></tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@section scripts {
+
+<script id="myTemplate" type="text/x-jsrender">
+    <tr id="TaskRow" recordid="{{:RecordID}}">
+        <td>{{:Notes}}</td>
+        <td DailyHours="{{:DailyHours}}">{{:TaskDate}}</td>
+        <td DailyHours="{{:DailyHours}}">{{:Hours}}</td>
+    </tr>
+</script>
+
+<script src="@Url.Content("~/Scripts/TimeManager/TimeManager.js")"></script>
+
+}

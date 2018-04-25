@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/plugins")
+</head>
+<body>
+    <div class="SiteContainer">
+        <div class="PageHeader">
+            <div class="HeaderText">
+                @if (!String.IsNullOrEmpty(Convert.ToString(ViewBag.PageHeading)))
+                { <a href="/">@ViewBag.PageHeading</a> }
+                else if (!String.IsNullOrEmpty(Convert.ToString(ViewBag.Title)))
+                { <a href="/">@ViewBag.Title</a> }
+                else
+                { <a href="/">Time Manager</a> }
+            </div>
+            @if (HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                <div class="LogoutLink">
+                    <a id="LogoutLink" href="javascript:Logout()">Logout</a>
+                </div>
+            }
+        </div>
+        <div class="PageContent">
+            @RenderBody()
+        </div>
+        <div class="PageFooter">
+            <div class="DividerLine"></div>
+            <div class="PageFooterText">TopTal Demo By Steven Perkins</div>
+        </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        function Logout() {
+            $.ajax({
+                method: "POST",
+                url: "/logout",
+                success: function() {
+                    window.location = "/";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

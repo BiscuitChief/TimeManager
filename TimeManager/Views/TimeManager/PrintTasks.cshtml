@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "TopTal Time Manager";
+    Layout = "~/Views/Shared/_PrintLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div>
+        <div id="TaskList">
+        </div>
+    </div>
+}
+
+@section scripts {
+
+<script src="@Url.Content("~/Scripts/TimeManager/PrintTasks.js")"></script>
+
+}
